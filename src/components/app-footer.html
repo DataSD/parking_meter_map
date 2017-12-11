@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html"/>
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html"/>
+<link rel="import" href="../app-shared-styles.html"/>
+
+<dom-module id="app-footer">
+  <template>
+    <style include="app-shared-styles">
+      :host {
+        display: flex;
+        padding: 5px;
+        width: 100%;
+        height: 30px;
+        background-color: var(--app-color-bgray-900);
+        color: white;
+        text-align: center;
+      }
+    </style>
+    <footer>
+        hello
+    </footer>
+
+ </template>
+
+  <script>
+    class AppFooter extends Polymer.Element {
+      static get is() { return 'app-footer'; }
+
+    }
+
+    window.customElements.define(AppFooter.is, AppFooter);
+  </script>
+</dom-module>

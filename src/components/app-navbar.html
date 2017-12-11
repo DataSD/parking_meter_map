@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html"/>
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html"/>
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html"/>
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html"/>
+<link rel="import" href="../../bower_components/paper-item/paper-item.html"/>
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html"/>
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html"/>
+<link rel="import" href="../app-shared-styles.html"/>
+
+<dom-module id="app-navbar">
+  <template>
+    <style include="app-shared-styles">
+      :host {
+        display: flex;
+        background-color: var(--app-color-bgray-900);
+        color: white;
+        padding: 0px;
+        width: 100%;
+      }
+
+      paper-item {
+        color: var(--app-color-gray-900);
+      }
+    </style>
+
+
+    <div class="navbar-buttons">
+      <iron-selector attr-for-selected="name" selected="[[activePage]]" selected-class="navbtn--active">
+        <a name="explore" href="/#/explore" class="navbtn">TBD</a>
+      </iron-selector>
+    </div>
+  </template>
+
+  <script>
+    class AppNavBar extends Polymer.Element {
+      static get is() { return 'app-navbar'; }
+
+    }
+
+    window.customElements.define(AppNavBar.is, AppNavBar);
+  </script>
+</dom-module>

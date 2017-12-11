@@ -1,0 +1,207 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html"/>
+
+<dom-module id="app-shared-styles">
+  <template>
+    <style>
+      :host {
+        /* Font stacks */
+        --app-font-family-sans : 'Open Sans', sans-serif;
+        --app-font-family-mono : 'Anonymous Pro', monospace;
+
+
+        /* UI colors */
+        --app-color-green-50  : #E8F5E9;
+        --app-color-green-100 : #C8E6C9;
+        --app-color-green-200 : #A5D6A7;
+        --app-color-green-300 : #81C784;
+        --app-color-green-400 : #66BB6A;
+        --app-color-green-500 : #4CAF50;
+        --app-color-green-600 : #43A047;
+        --app-color-green-700 : #388E3C;
+        --app-color-green-800 : #2E7D32;
+        --app-color-green-900 : #1B5E20;
+
+        --app-color-red-50  : #FFEBEE;
+        --app-color-red-100 : #FFCDD2;
+        --app-color-red-200 : #EF9A9A;
+        --app-color-red-300 : #E57373;
+        --app-color-red-400 : #EF5350;
+        --app-color-red-500 : #F44336;
+        --app-color-red-600 : #E53935;
+        --app-color-red-700 : #D32F2F;
+        --app-color-red-800 : #C62828;
+        --app-color-red-900 : #B71C1C;
+
+        --app-color-bgray-50  : #ECEFF1;
+        --app-color-bgray-100 : #CFD8DC;
+        --app-color-bgray-200 : #B0BEC5;
+        --app-color-bgray-300 : #90A4AE;
+        --app-color-bgray-400 : #78909C;
+        --app-color-bgray-500 : #607D8B;
+        --app-color-bgray-600 : #546E7A;
+        --app-color-bgray-700 : #455A64;
+        --app-color-bgray-800 : #37474F;
+        --app-color-bgray-900 : #263238;
+
+        --app-color-blue-50  : #E3F2FD;
+        --app-color-blue-100 : #BBDEFB;
+        --app-color-blue-200 : #90CAF9;
+        --app-color-blue-300 : #64B5F6;
+        --app-color-blue-400 : #42A5F5;
+        --app-color-blue-500 : #2196F3;
+        --app-color-blue-600 : #1E88E5;
+        --app-color-blue-700 : #1976D2;
+        --app-color-blue-800 : #1565C0;
+        --app-color-blue-900 : #0D47A1;
+
+        /* Text colors */
+        --app-color-text       : #212121;
+        --app-color-text-light : #757575;
+        --app-color-text-error : var(--app-color-red-600);
+
+        /* Resets */
+        font-family: var(--app-font-family-sans);
+      }
+      :host *, :host *:before, :host *:after {
+        box-sizing: border-box;
+      }
+
+      /* HEADINGS */
+      h1, h2, h3, h4, h5, h6, label {
+        font-weight: 400;
+      }
+
+      /* BUTTONS */
+      .btn {
+        font-family: var(--app-font-family-sans);
+        font-size: 0.8rem;
+        color: white;
+        background-color: var(--app-color-bgray-500);
+        display: inline-block;
+        border: none;
+        text-transform: uppercase;
+        padding: .66rem 1rem;
+        cursor: pointer;
+      }
+      .btn-full {
+        display: block;
+        width: 100%;
+      }
+      .btn-success {
+        background-color: var(--app-color-green-600);
+      }
+      .btn-success:hover {
+        background-color: var(--app-color-green-800);
+      }
+
+      .ubtn {
+        font-family: var(--app-font-family-sans);
+        font-size: 0.8rem;
+        color: var(--app-color-text);
+        display: inline-block;
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: .33rem;
+        position: relative;
+      }
+      .ubtn:hover {
+        background-color: var(--app-color-blue-50);
+      }
+      .ubtn:after {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--app-color-blue-200);
+      }
+
+
+      .ubtn.active {
+        color: var(--app-color-text);
+        padding: .33rem;
+        font-weight: bold;
+      }
+
+      .ubtn.active:after {
+        background-color: var(--app-color-blue-500);
+      }
+      .ubtn-center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .navbtn {
+        font-family: var(--app-font-family-sans);
+        font-size: 0.8rem;
+        color: white;
+        background-color: transparent;
+        display: inline-block;
+        border: none;
+        text-transform: uppercase;
+        padding: .4rem .4rem .33rem;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .navbtn:hover {
+        background-color: var(--app-color-bgray-800);
+      }
+      .navbtn + .navbtn {
+        margin-left: 0.33rem;
+      }
+      .navbtn--active {
+        background-color: var(--app-color-bgray-600);
+      }
+
+      /* FORMS */
+      .form-group {}
+      .form-group + .form-group {
+        margin-top: 2rem;
+      }
+      .form-label {
+        display: block;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: var(--app-color-text-light);
+        margin-bottom: 0.66rem;
+      }
+      .form-input {
+        display: block;
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.66rem;
+        border: none;
+        background-color: var(--app-color-bgray-50);
+        color: var(--app-color-bgray-700);
+        font-family: var(--app-font-family-mono);
+      }
+      .form-helper {
+        font-size: 0.8rem;
+        margin-top: 0.66rem;
+      }
+      /* FORMS: error states */
+      .form-group--error .form-input {
+        background-color: var(--app-color-red-50);
+        color: var(--app-color-text-error);
+      }
+      .form-group--error .form-helper {
+        color: var(--app-color-text-error);
+      }
+
+      /* CARDS */
+      .card {
+        background-color: white;
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        color: var(--app-color-text);
+        padding: 2rem;
+      }
+      .card-section + .card-section {
+        margin-top: 2rem;
+      }
+    </style>
+  </template>
+</dom-module>
