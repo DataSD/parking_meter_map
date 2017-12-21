@@ -118,11 +118,11 @@
                             return o.properties.pole == poleStatus.value.pole;
                         });
                         if (refMeterIndex === -1) {
-                            /*var refMeter = _.find(this.parkingMetersLoc.features, function(o) {
+                            var refMeter = _.find(this.parkingMetersLoc.features, function(o) {
                                 return o.properties.pole == poleStatus.value.pole;
-                            });*/
-                            var random = Math.floor(Math.random() * this.parkingMetersLoc.features.length);
-                            var refMeter = this.parkingMetersLoc.features[random];
+                            });
+                            //var random = Math.floor(Math.random() * this.parkingMetersLoc.features.length);
+                            //var refMeter = this.parkingMetersLoc.features[random];
                             refMeter.properties.last_transaction = poleStatus.value;
                             displayedParkingMeters.features.push(refMeter);
                         }
