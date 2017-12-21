@@ -11,6 +11,9 @@
 <link rel="import" href="../../../bower_components/qa-map-gl/qa-map-gl-source-geojson.html" />
 <link rel="import" href="../../../bower_components/qa-map-gl/qa-map-gl-layer.html" />
 <link rel="import" href="../../../bower_components/qa-map-gl/qa-map-gl-control-geocoder.html" />
+<link rel="import" href="../../../bower_components/polymerfire/firebase-app.html" />
+<link rel="import" href="../../../bower_components/polymerfire/firebase-query.html" />
+<link rel="import" href="../../../bower_components/iron-ajax/iron-ajax.html" />
 
 
 
@@ -24,38 +27,61 @@
         }
         </style>
 
+        <iron-ajax
+            auto
+            url="http://theia.datasd.org.s3.amazonaws.com/parking_meters-1.geojson"
+            params='{"part":"snippet", "q":"polymer", "key": "YOUTUBE_API_KEY", "type": "video"}'
+            handle-as="json"
+            last-response="{{ parkingMetersLoc }}"
+            debounce-duration="300">
+        </iron-ajax>
+
+        <firebase-app
+            auth-domain="sd-parking-meter-transactions.firebaseio.com"
+            database-url="https://sd-parking-meter-transactions.firebaseio.com/"
+            api-key="AIzaSyDj7JWOeGWtPBb0xihm0Xd9JitgPdGTBXM">
+        </firebase-app>
+
+        <firebase-query
+            log
+            id="query"
+            path="/prod/ips/meters/poles"
+            data="{{ poleStatus }}">
+        </firebase-query>
+
         <qa-map-gl
-            zoom="14",
+            zoom="13",
             minZoom="11",
             maxZoom="17",
             bearing="0"
-            pitch="9"
+            pitch="0"
             flex-to-size
             disable-attribution-control
             disable-map-hash
             style="mapbox://styles/mapbox/dark-v9"
             mgl-token="{{ mglToken }}"
-            lat="32.705"
-            lng="-117.12">
+            lat="32.71480352998657"
+            lng="-117.15692863401921">
             <qa-map-gl-control-geocoder
                 mgl-token="{{ mglToken }}">
             </qa-map-gl-control-geocoder>
+            <!--<qa-map-gl-source-geojson
+		id="sd-parking-meters"
+                data-url="http://theia.datasd.org.s3.amazonaws.com/parking_meters.geojson">
+            </qa-map-gl-source-geojson>-->
             <qa-map-gl-source-geojson
-		id="sd-roads"
-                data="http://seshat.datasd.org/sde/bike_route/bike_routes_datasd.geojson">
-	    </qa-map-gl-source-geojson>
+                id="sd-parking-meters"
+                data="{{ displayedParkingMeters }}">
+            </qa-map-gl-source-geojson>
 	    <qa-map-gl-layer
-                layer-type="line"
-                id="sd-roads-line"
-                source="sd-roads"
-                paint='{"line-color": "pink"}'>
+                layer-type="circle"
+                id="sd-parking-meters-circle"
+                source="sd-parking-meters"
+                paint='{"circle-color": "green"}'>
             </qa-map-gl-layer>
 
 
             </qa-map-gl>
-
-
-
 
 </template>
 
@@ -68,7 +94,48 @@
 
             static get observers() {
                 return [
+                    '_poleStatusChanged(poleStatus.*)',
+                    '_displayedParkingMetersChanged(displayedParkingMeters.*)'
                 ];
+            }
+
+
+            _displayedParkingMetersChanged(displayedParkingMeters) {
+                console.log('dp change');
+                console.log(displayedParkingMeters);
+            }
+
+            _poleStatusChanged(poleStatus) {
+                if (this.poleStatus && this.parkingMetersLoc) {
+                    var displayedParkingMeters = this.displayedParkingMeters || null;
+                    if (displayedParkingMeters === null) {
+                        displayedParkingMeters = Object.assign({}, this.parkingMetersLoc)
+                        displayedParkingMeters.features = [];
+                    }
+
+                    if (poleStatus.path.includes("last_transaction")) {
+                        let refMeterIndex = _.findIndex(displayedParkingMeters.features, function(o) {
+                            return o.properties.pole == poleStatus.value.pole;
+                        });
+                        if (refMeterIndex === -1) {
+                            /*var refMeter = _.find(this.parkingMetersLoc.features, function(o) {
+                                return o.properties.pole == poleStatus.value.pole;
+                            });*/
+                            var random = Math.floor(Math.random() * this.parkingMetersLoc.features.length);
+                            var refMeter = this.parkingMetersLoc.features[random];
+                            refMeter.properties.last_transaction = poleStatus.value;
+                            displayedParkingMeters.features.push(refMeter);
+                        }
+                        else {
+                            var refMeter = displayedParkingMeters.features[refMeterIndex];
+                            refMeter.properties.last_transaction = poleStatus.value;
+                            displayedParkingMeters.features[refMeterIndex] = refMeter;
+                        }
+                    }
+                    console.log(displayedParkingMeters);
+                    this.set('displayedParkingMeters', {});
+                    this.set('displayedParkingMeters', displayedParkingMeters);
+                }
             }
 
 
@@ -78,15 +145,19 @@
                         type: String,
                         value: "pk.eyJ1IjoibXJtYWtzaW1pemUiLCJhIjoiRlRwLWwyVSJ9.--Y4RdEJ_5ZuJjSUkx34vQ"
                     },
-                    activeParcel: {
+                    poleStatus: {
                         type: Object,
-                        value: null
+                        notify: true
                     },
-                    activeFeature: {
+                    parkingMetersLoc: {
+                        type: Object,
+                        notify: true
+                    },
+                    displayedParkingMeters: {
                         type: Object,
                         notify: true
                     }
-                };
+               };
             }
         }
 

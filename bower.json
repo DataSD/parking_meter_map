@@ -20,7 +20,9 @@
     "iron-input": "^2.0.1",
     "paper-tabs": "PolymerElements/paper-tabs#^2.0.0",
     "app-storage": "^2.0.2",
-    "paper-button": "^2.0.0"
+    "paper-button": "^2.0.0",
+    "paper-item": "^2.0.0",
+    "polymerfire": "^2.2.1"
   },
   "resolutions": {
     "polymer": "^2.0.0",
