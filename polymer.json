@@ -2,7 +2,7 @@
   "entrypoint": "index.html",
   "shell": "src/app-shell.html",
   "fragments": [
-    "src/screens/explore/screen-explore.html",
+    "src/screens/explore/screen-explore.html"
   ],
   "sources": [
     "src/**/*",
