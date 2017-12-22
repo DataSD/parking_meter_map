@@ -6,6 +6,7 @@
 <link rel="import" href="../../../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../../../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../../bower_components/app-layout/app-drawer/app-drawer.html">
 
 <link rel="import" href="../../../bower_components/qa-map-gl/qa-map-gl.html" />
 <link rel="import" href="../../../bower_components/qa-map-gl/qa-map-gl-source-geojson.html" />
@@ -25,12 +26,26 @@
             display: flex;
             height: 100%;
         }
+        #floating-info {
+            width: 250px;
+            padding: 3px;
+            overflow-y: scroll;
+        }
+        .pole-transaction {
+            display: flex;
+        }
+        .pole-info {
+            /*display: flex;
+            flex-direction: row;
+            justify-content: space-between;*/
+            list-style: none;
+            padding-left: 0px;
+        }
         </style>
 
-        <iron-ajax
+       <iron-ajax
             auto
             url="http://theia.datasd.org.s3.amazonaws.com/parking_meters-1.geojson"
-            params='{"part":"snippet", "q":"polymer", "key": "YOUTUBE_API_KEY", "type": "video"}'
             handle-as="json"
             last-response="{{ parkingMetersLoc }}"
             debounce-duration="300">
@@ -48,6 +63,17 @@
             path="/prod/ips/meters/poles"
             data="{{ poleStatus }}">
         </firebase-query>
+
+        <firebase-query
+            log
+            id="query"
+            path="/prod/ips/meters/transactions/2017"
+            order-by-child="pole"
+            limit-to-first="10"
+            data="{{ poleTransactions }}">
+        </firebase-query>
+
+
 
         <qa-map-gl
             zoom="13",
@@ -83,6 +109,27 @@
 
             </qa-map-gl>
 
+            <div id="floating-info">
+                <h2> Transaction Log </h2>
+                <template is="dom-repeat" items="[[ poleTransactions ]]">
+                    <div class="pole-transaction">
+                        <ul class="pole-info">
+                            <li><strong> Pole: </strong>[[ item.pole ]] </li>
+                            <li><strong> Event: </strong> [[ item.ev_type_full ]] </li>
+                            <li><strong> Amt. Paid (c): </strong>[[ item.amountpaid ]] </li>
+                            <li><strong> SessID: </strong> [[ item.sessionid ]] </li>
+                            <li><strong> TransType: </strong> [[ item.transactiontype ]] </li>
+                            <li><strong> Start: </strong> [[ item.local_startdatetime ]]</li>
+                            <li><strong> End: </strong>[[ item.local_enddatetime ]]</li>
+                        </ul>
+
+                    </div>
+                </template>
+            </div>
+
+
+
+
 </template>
 
     <script>
@@ -104,6 +151,15 @@
                 console.log('dp change');
                 console.log(displayedParkingMeters);
             }
+
+            /*_getStreetViewImage(size, address) {
+                let base = 'https://maps.googleapis.com/maps/api/streetview?'
+                let key = ''
+                let gsv_url = `${base}size=${size}&location=${address}&key=${key}`;
+                console.log(gsv_url);
+                return gsv_url;
+            }*/
+
 
             _poleStatusChanged(poleStatus) {
                 if (this.poleStatus && this.parkingMetersLoc) {
